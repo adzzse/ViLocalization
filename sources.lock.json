@@ -2,11 +2,41 @@
   "VH-Workflow-Skill": {
     "url": "https://github.com/kann420/VH-Workflow-Skill.git",
     "commit": "1edff3bb871c198ba8955e6152c3e3b7d7b9bec8",
-    "directory": "tools/VH-Workflow-Skill"
+    "files": [
+      {
+        "upstream": "skills/game-localization-vi/scripts/build_batches.js",
+        "local": "vendor/vh-workflow/build_batches.cjs",
+        "modified": false,
+        "upstream_sha256": "00ab6845ca9666e8a79911f7d76c9fe8c8fd875a1d465ca5f0fbf4b3fc0ca685",
+        "sha256": "00ab6845ca9666e8a79911f7d76c9fe8c8fd875a1d465ca5f0fbf4b3fc0ca685"
+      }
+    ]
   },
   "DazedTL": {
     "url": "https://github.com/dazedanon/DazedTL.git",
     "commit": "942029800374c586de02d720704d450bfeb6ac52",
-    "directory": "tools/DazedTL"
+    "files": [
+      {
+        "upstream": "backend/dazedtl/engine/data/skills/game-translation/tools/Text Fitting/layout.py",
+        "local": "vendor/dazedtl/text-fitting/layout.py",
+        "modified": false,
+        "upstream_sha256": "9aedc1bab4575664cce7bfed22128e64343ab623f2496052817f3f8909f54b3b",
+        "sha256": "9aedc1bab4575664cce7bfed22128e64343ab623f2496052817f3f8909f54b3b"
+      },
+      {
+        "upstream": "backend/dazedtl/engine/data/skills/game-translation/tools/Text Fitting/test_layout.py",
+        "local": "vendor/dazedtl/text-fitting/test_layout.py",
+        "modified": false,
+        "upstream_sha256": "792b2965f42895b13618985fdbd561b02dfa144e6f2a4b2ea9bb3b4067261f03",
+        "sha256": "792b2965f42895b13618985fdbd561b02dfa144e6f2a4b2ea9bb3b4067261f03"
+      },
+      {
+        "upstream": "backend/dazedtl/engine/data/skills/game-translation/tools/Game Archives/Electron ASAR/unpack_asar.py",
+        "local": "vendor/dazedtl/asar/unpack_asar.py",
+        "modified": true,
+        "upstream_sha256": "cd937361e7443b936d58c5975084c960e9dc91448c5c98b6fd302955a542c598",
+        "sha256": "291625c853877e41b5fbbd37bede954782eb5871e4739a6d120c567b9ac53dca"
+      }
+    ]
   }
 }

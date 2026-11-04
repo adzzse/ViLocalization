@@ -17,3 +17,7 @@ jobs:
           node-version: '22'
       - run: npm test
       - run: npm run demo
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: npm run test:tools

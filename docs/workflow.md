@@ -98,5 +98,6 @@ Cho engine khác, viết reader/writer nhỏ cho đúng format được quan sá
    và so sánh các trường ngoài text với nguồn. Giữ encoding, escape và code của engine.
 5. Thêm fixture round trip/QA của format vào tests/ rồi thử lô pilot trong game.
 
-Với DazedTL, ưu tiên đường helper/app của nó và tham khảo [dazedtl.md](dazedtl.md).
-Đừng chuyển format DazedTL bằng đổi tên cột đơn thuần; schema và scope khác corpus VH.
+Các bước census, canary, rà thoại, fitting, native QA và patch từ DazedTL đã được
+thích nghi trong [reference của skill](../.agents/skills/viet-hoa-game/references/dazed-workflow.md).
+Dùng [công cụ độc lập đã tách](dazedtl.md) khi cần; workflow không phụ thuộc app/helper DazedTL.
