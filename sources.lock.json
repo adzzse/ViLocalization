@@ -1,0 +1,12 @@
+{
+  "VH-Workflow-Skill": {
+    "url": "https://github.com/kann420/VH-Workflow-Skill.git",
+    "commit": "1edff3bb871c198ba8955e6152c3e3b7d7b9bec8",
+    "directory": "tools/VH-Workflow-Skill"
+  },
+  "DazedTL": {
+    "url": "https://github.com/dazedanon/DazedTL.git",
+    "commit": "942029800374c586de02d720704d450bfeb6ac52",
+    "directory": "tools/DazedTL"
+  }
+}

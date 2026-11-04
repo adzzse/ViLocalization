@@ -1,0 +1,13 @@
+{
+  "name": "vilocalization",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Workflow Việt hóa game theo ngữ cảnh, có QA và kiểm chứng round trip",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test tests/workflow.test.mjs",
+    "demo": "node scripts/demo.mjs",
+    "setup:tools": "node scripts/bootstrap.mjs"
+  }
+}

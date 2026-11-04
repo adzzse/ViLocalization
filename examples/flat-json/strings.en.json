@@ -1,0 +1,8 @@
+{
+  "menu_new": "New game",
+  "quest_count": "Collect {COUNT} crystals.",
+  "intro": "[0.00-2.50]<b>Welcome, {PLAYER}!</b>",
+  "save": "Save to slot %02d?",
+  "hint": "Move forward.\nPress [interact] to open the door.",
+  "blank": ""
+}

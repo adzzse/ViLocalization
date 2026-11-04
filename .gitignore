@@ -1,0 +1,15 @@
+.codex/task-state/
+docs/superpowers/plans/
+.codebase-memory/
+tools/
+projects/*
+!projects/.gitkeep
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+Thumbs.db
+.DS_Store
