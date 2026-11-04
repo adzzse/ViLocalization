@@ -8,7 +8,7 @@ description: Việt hóa game từ ngôn ngữ khác sang tiếng Việt, biên 
 Các đường dẫn dưới đây tính từ root repository, ba cấp trên thư mục skill này.
 Đọc [workflow](../../../docs/workflow.md) khi bắt đầu một game hoặc cần hợp đồng corpus/lệnh.
 Khi chọn engine/công cụ, đọc [engine routing](references/engine-routing.md).
-Khi bắt đầu, tiếp tục hoặc chốt game, đọc [các mốc DazedTL đã tách](references/dazed-workflow.md)
+Khi bắt đầu, tiếp tục hoặc chốt game, đọc [các mốc kiểm chứng bản dịch](references/translation-workflow.md)
 để làm census/canary, rà thoại, fitting và kiểm chứng patch trực tiếp trong workspace.
 
 1. Xác định game, phiên bản, ngôn ngữ nguồn, engine, thư mục text và phạm vi.
@@ -32,7 +32,7 @@ Khi bắt đầu, tiếp tục hoặc chốt game, đọc [các mốc DazedTL đ
    chia sẻ cẩm nang; người phụ trách rà lại các câu ảnh hưởng quan hệ/cốt truyện.
 6. Chạy check, sửa mọi lỗi và rà nội dung theo cảnh. QA tự động chỉ kiểm tra cấu trúc;
    đọc lại nghĩa, xưng hô, glossary và các dòng giống bản gốc trước khi chốt.
-   Chạy finalize rồi rebuild. Dùng [công cụ độc lập](../../../docs/dazedtl.md)
+   Chạy finalize rồi rebuild. Dùng [công cụ hỗ trợ](../../../docs/tools.md)
    khi cần fitting/giải nén ASAR; giữ các phép đo, source và output trong project của game.
 7. Xuất patch vào build/, đối chiếu phạm vi thay đổi và thử game: font dấu Việt,
    tràn chữ, UI, phụ đề, save/load. Giữ backup/hash và rollback theo ENGINE.md.

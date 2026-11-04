@@ -98,6 +98,6 @@ Cho engine khác, viết reader/writer nhỏ cho đúng format được quan sá
    và so sánh các trường ngoài text với nguồn. Giữ encoding, escape và code của engine.
 5. Thêm fixture round trip/QA của format vào tests/ rồi thử lô pilot trong game.
 
-Các bước census, canary, rà thoại, fitting, native QA và patch từ DazedTL đã được
-thích nghi trong [reference của skill](../.agents/skills/viet-hoa-game/references/dazed-workflow.md).
-Dùng [công cụ độc lập đã tách](dazedtl.md) khi cần; workflow không phụ thuộc app/helper DazedTL.
+Các bước census, canary, rà thoại, fitting, native QA và patch được hướng dẫn trong
+[reference của skill](../.agents/skills/viet-hoa-game/references/translation-workflow.md).
+Dùng [công cụ hỗ trợ](tools.md) khi cần fitting hoặc giải nén ASAR.

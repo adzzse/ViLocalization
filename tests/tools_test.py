@@ -11,7 +11,7 @@ import unicodedata
 
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("dazed_asar", ROOT / "vendor/dazedtl/asar/unpack_asar.py")
+spec = importlib.util.spec_from_file_location("asar", ROOT / "vendor/asar/unpack_asar.py")
 asar = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(asar)
 
@@ -51,7 +51,7 @@ class AsarTests(unittest.TestCase):
 
     def test_cli_runs_without_an_app_from_an_unrelated_directory(self):
         source = archive(self.base)
-        command = [sys.executable, "-X", "utf8", str(ROOT / "vendor/dazedtl/asar/unpack_asar.py"), str(source), str(self.output)]
+        command = [sys.executable, "-X", "utf8", str(ROOT / "vendor/asar/unpack_asar.py"), str(source), str(self.output)]
         result = subprocess.run(command, cwd=self.base, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual((self.output / "hello.txt").read_bytes(), b"hello")
@@ -119,7 +119,7 @@ class AsarTests(unittest.TestCase):
 class FittingTests(unittest.TestCase):
     def test_original_upstream_regressions_pass_from_an_unrelated_directory(self):
         with tempfile.TemporaryDirectory(prefix="vilocalization-fitting-") as directory:
-            result = subprocess.run([sys.executable, "-X", "utf8", str(ROOT / "vendor/dazedtl/text-fitting/test_layout.py")],
+            result = subprocess.run([sys.executable, "-X", "utf8", str(ROOT / "vendor/text-fitting/test_layout.py")],
                                     cwd=directory, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("0 failures", result.stdout)

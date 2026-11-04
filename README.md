@@ -3,14 +3,14 @@
 Workspace để dịch game từ ngôn ngữ khác sang tiếng Việt cùng coding agent.
 Mỗi game có cẩm nang xưng hô, hồ sơ nhân vật, thuật ngữ, các lô dịch và QA riêng.
 Mặc định dịch trực tiếp bằng agent đang dùng, không cần thêm API key.
-Tái sử dụng workflow và một số công cụ độc lập từ DazedTL ngay trong repo này.
+Các công cụ chia lô, QA, fitting và giải nén được quản lý ngay trong repo.
 
 Luồng: **khảo sát → extract/round trip → research → cẩm nang → lô thử → dịch → QA → rebuild → playtest → patch**.
 
 ## Bắt đầu
 
 Cần **Node.js 22+**. Các công cụ fitting/ASAR cần thêm **Python 3.10+**, chỉ dùng thư viện chuẩn.
-Không cần cài dependency npm/pip hay app DazedTL.
+Không cần cài dependency npm/pip.
 
 ```powershell
 npm test
@@ -56,25 +56,24 @@ Kết quả ở `projects/my-game/build/strings.vi.json`; nguồn trong `origina
 `en` trong corpus là tên trường kế thừa của VH, chứa nguyên văn ngôn ngữ nguồn bất kỳ.
 Thay `en` ở lệnh init bằng `ja`, `ko`, `zh-CN`… theo game.
 
-## Workflow và công cụ tách từ DazedTL
+## Công cụ và kiểm chứng
 
 ```powershell
 npm run check:sources
 npm run test:tools
 ```
 
-Source cần dùng đã nằm trong `vendor/`, kèm license, commit, đường dẫn upstream và SHA256
+Các công cụ nằm trong `vendor/`, kèm license và SHA256
 ở `sources.lock.json`. `check:sources` kiểm tra file local, không truy cập mạng hay clone repo.
-Không có launcher, GUI, runtime/helper DazedTL trong luồng setup.
 
 Skill hiện tại dùng thêm census/coverage, canary, rà thoại theo cảnh, fitting, kiểm tra
-save/load và patch từ DazedTL. Hai công cụ đã tách chạy độc lập:
+save/load và kiểm chứng patch. Hai công cụ Python chạy độc lập:
 
 - `scripts/fit_text.py`: gợi ý ngắt dòng theo width/số hàng, không sửa file đầu vào.
-- `vendor/dazedtl/asar/unpack_asar.py`: giải nén ASAR offline ra thư mục mới, giữ archive nguồn.
+- `vendor/asar/unpack_asar.py`: giải nén ASAR offline ra thư mục mới, giữ archive nguồn.
 
 - [Workflow, schema và adapter engine](docs/workflow.md)
-- [Dùng phần đã tách từ DazedTL](docs/dazedtl.md)
+- [Dùng các công cụ hỗ trợ](docs/tools.md)
 - [Nguồn, thay đổi so với upstream và license](docs/sources.md)
 
 ## Dữ liệu và giới hạn

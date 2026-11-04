@@ -1,4 +1,4 @@
-"""Suggest line breaks using DazedTL's standalone cell-width fitter; never apply them."""
+"""Suggest line breaks using approximate cell widths; never apply them."""
 
 import argparse
 import importlib.util
@@ -15,8 +15,8 @@ def main():
     args = parser.parse_args()
     if args.width < 1 or args.lines < 1:
         parser.error("width and lines must be positive")
-    module_path = Path(__file__).resolve().parents[1] / "vendor/dazedtl/text-fitting/layout.py"
-    spec = importlib.util.spec_from_file_location("dazed_layout", module_path)
+    module_path = Path(__file__).resolve().parents[1] / "vendor/text-fitting/layout.py"
+    spec = importlib.util.spec_from_file_location("text_layout", module_path)
     layout = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(layout)
     try:

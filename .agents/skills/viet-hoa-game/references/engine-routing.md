@@ -14,10 +14,9 @@ Ghi dấu hiệu, version và hợp đồng extract/rebuild vào ENGINE.md trư�
 | data.win/game.unx với FORM, GEN8, STRG | GameMaker | Điều tra literal theo occurrence; không đổi mọi chuỗi giống nhau |
 | xp3, ypf/ystb, Scene.pck, pck | VN engines/Godot | Xác định container, encoding và byte spans trước khi chọn extractor |
 
-Chỉ tải thêm tool/module đúng engine khi game cần, ghi nguồn/commit/license và
-dependency. [Danh mục upstream đã pin](https://github.com/dazedanon/DazedTL/blob/942029800374c586de02d720704d450bfeb6ac52/backend/dazedtl/engine/data/skills/game-translation/references/tools-catalog.md)
-là tham khảo để chọn file; các đường dẫn tới app, binary chưa có hoặc game mẫu
-không phải dependency đã được cài trong workspace này.
+Chỉ thêm tool/module đúng engine khi game cần, ghi nguồn, phiên bản, license và
+dependency. [Công cụ có sẵn](../../../../docs/tools.md) là điểm bắt đầu;
+chọn thêm extractor/repacker theo format và phiên bản đã quan sát được.
 
 Đọc source trước khi đưa script mẫu vào project: thay đường dẫn hardcode bằng input
 của game, kiểm import/dependency, output và identity round trip. Giữ license cho

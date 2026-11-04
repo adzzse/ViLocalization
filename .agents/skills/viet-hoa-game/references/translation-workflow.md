@@ -1,8 +1,7 @@
-# Các mốc dịch thích nghi từ DazedTL
+# Các mốc kiểm chứng bản dịch
 
-Đây là quy trình chạy trực tiếp trong ViLocalization. Dùng corpus/E/ và cẩm nang
-hiện có; các bước dưới đây không gọi app, project.py, DAZEDTL_ROOT hoặc endpoint.
-Đọc [docs/dazedtl.md](../../../../docs/dazedtl.md) khi cần công cụ Python đã tách.
+Thực hiện trong workspace ViLocalization, dùng corpus/E/ và cẩm nang của game.
+Đọc [docs/tools.md](../../../../docs/tools.md) khi cần công cụ fitting hoặc giải nén ASAR.
 
 ## Census và nguồn
 
