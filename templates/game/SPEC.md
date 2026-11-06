@@ -2,7 +2,8 @@
 
 ## Khảo sát
 
-- **Engine và bản cài** — <engine, phiên bản, đường dẫn, nơi game nạp chữ>
+- **Engine game** — <tên engine, phiên bản và nơi game nạp chữ>
+- **Môi trường chạy desktop** — <runtime hoặc nền tảng chạy, phiên bản nếu có và đường dẫn bản cài>
 - **Nguyên văn dùng để dịch** — <ngôn ngữ và bằng chứng>
 - **Ngôn ngữ game đã có** — <các lựa chọn và chất lượng nguồn tham chiếu nếu ảnh hưởng bản dịch>
 - **Phạm vi** — <thoại, UI, phụ đề, ảnh hoặc nhóm khác. Ghi phần ngoài phạm vi hoặc chưa kiểm kê>
