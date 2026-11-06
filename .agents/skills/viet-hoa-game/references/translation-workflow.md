@@ -15,13 +15,15 @@ corpus hiện có, không chứng minh đã extract hết game. Mục bỏ qua c
 như identifier, comment hoặc asset name; text chưa truy cập được vẫn là khoảng trống.
 Không dùng bộ lọc chữ Nhật làm census cho nguồn Anh/Hàn/Trung hoặc game nhiều ngôn ngữ.
 
-## Canary trước bulk
+## Canary theo đường nạp chữ
 
-Sau identity round trip, đổi thử vài câu dễ nhận ra trong bản build: tiêu đề, nút,
-tên map và một câu có token. Đọc ngược output để chứng minh đúng field/loader/index.
-Nếu việc chạy/cài game nằm trong yêu cầu hiện tại, thử bản sao game và xác nhận
-hiển thị rồi khôi phục/hash. Nếu chưa thể chạy, ghi kiểm tra native còn pending;
-tiếp tục phần độc lập, không coi canary tĩnh là đã playtest.
+Sau identity round trip, đổi thử một mục dễ nhận ra cho mỗi đường game đọc chữ,
+kể cả đường phát hiện khi mở rộng pilot. Chọn mục có biến hoặc markup nếu nguồn có.
+Đọc ngược bản dựng và đối chiếu với loader để xác nhận đúng trường, khóa hoặc chỉ số,
+ô ngôn ngữ nếu có và token. Ghi kết quả theo từng đường trước khi dịch hàng loạt.
+Nếu việc chạy game nằm trong yêu cầu hiện tại, thử hiển thị và thay biến trên bản sao,
+rồi khôi phục và đối chiếu hash. Nếu chỉ kiểm tra tĩnh, ghi playtest còn chờ và tiếp
+tục các phần độc lập.
 
 ## Context và rà thoại
 
@@ -33,11 +35,15 @@ Nếu người dùng cung cấp phần game trước/bản dịch tham khảo, g
 Chỉ tái dùng khi text gốc, speaker và ngữ cảnh khớp; giải quyết thuật ngữ mâu thuẫn
 trong glossary trước khi dịch. Chưa có quyết định thì ghi followups.md.
 
-Dịch một mạch hội thoại, đọc tiếng Việt theo thứ tự để rà cách đáp, nhịp và giọng
-nhân vật, rồi đối chiếu từng câu với nguồn để giữ nghĩa, độ mơ hồ và cảm xúc.
+Dịch một mạch hội thoại, đọc thoại và phụ đề tiếng Việt theo thứ tự cảnh để rà cách
+đáp, nhịp, xưng hô và giọng nhân vật. Đối chiếu từng câu với nguồn để giữ nghĩa,
+độ mơ hồ và cảm xúc. Xác minh các mục giống nguyên văn trước khi chốt.
 Giữ thói quen nói/tiếng cười có bằng chứng; không áp lối viết tiếng Anh hoặc chuyển
 âm tiếng Nhật thành quy tắc toàn cục cho tiếng Việt. Đọc lân cận hai bên khi cảnh bị chia lô.
-Rà này là một phần của biên tập, không mặc định gọi thêm API cho toàn game.
+
+Đối chiếu thuật ngữ theo glossary. So số lượng, điều kiện hoàn thành và tên vật phẩm
+giữa nhiệm vụ, UI và thoại liên quan. Nếu các nguồn mâu thuẫn, giữ thông tin của
+từng dòng và ghi ID vào followups.md để xác minh. Ghi lô hoặc cảnh đã rà trong PROGRESS.md.
 
 ## Fitting theo renderer
 
@@ -52,8 +58,8 @@ và qa.json/ENGINE.md đã ghi quy tắc đó. Bản vừa số cell chưa chứ
 
 ## Native QA, patch và tiếp tục
 
-Thử pilot trước khi dịch rộng. Sau đó chọn kiểm tra theo diff: UI/database cần màn
-hình dùng dữ liệu ấy; thoại cần trigger, substitution và save/load liên quan.
+Khi playtest bản vá, chọn kiểm tra theo diff. Với UI/database, mở màn hình dùng dữ
+liệu đã sửa. Với thoại, thử kích hoạt cảnh, thay biến và lưu/tải liên quan.
 Ghi cảnh/build/hash đã thử, fixture tổng hợp và phần chưa thử; không gộp độ phủ text,
 độ phủ layout và tiến độ chơi thành một phần trăm duy nhất.
 
@@ -62,7 +68,16 @@ Mở lại archive để kiểm tên file, CRC/hash và loại workspace, API ke
 logs, saves, test fixture. Thử cài/khôi phục trên bản sao khớp phiên bản khi được yêu cầu.
 Đừng đưa spoiler vào commit/release note. Publish vẫn theo yêu cầu riêng.
 
-Lưu milestone vào PROGRESS.md với count từ file thật, census đã audited hay chưa,
-source/guidance hash, lô/file đang làm, canary/native QA, blocker và bước tiếp theo.
+Lưu milestone vào PROGRESS.md với hash nguồn và cẩm nang, lô hoặc file đang làm,
+canary, ID còn vướng và lô hoặc cảnh cần xử lý tiếp. Khi bàn giao, báo riêng bốn mục sau:
+
+- **Đã dịch trong corpus** — số vị trí đã dịch trên tổng số, đếm từ file thật.
+- **Đã rà ngôn ngữ** — lô hoặc cảnh đã đối chiếu nguyên văn và phần còn chờ.
+- **Đã playtest** — bản dựng và màn hình hoặc cảnh đã thử. Nếu mới kiểm tra tĩnh, ghi playtest còn chờ.
+- **Nguồn chữ còn ngoài gói hoặc chưa kiểm kê** — vị trí hoặc nhóm nguồn và lý do.
+
+Chỉ dùng nhãn **dịch toàn bộ** khi census bao phủ phạm vi người dùng yêu cầu và
+mọi vị trí thuộc phạm vi đó đã dịch.
+
 Khi resume, đối chiếu nguồn, guidance và output; nguồn/cẩm nang đổi thì rà phần ảnh
 hưởng, không tái dùng kết quả cũ chỉ vì tên file hoặc câu chữ giống nhau.
