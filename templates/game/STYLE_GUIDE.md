@@ -6,11 +6,9 @@ Trạng thái: cần nghiên cứu trước khi dịch.
 Ghi thể loại, thời đại, giọng kể, mức độ trang trọng và cách xử lý hài hước/chửi thề theo bản gốc.
 
 ## Xưng hô
-Lấy bằng chứng từ character_bible.md. Tách người nói và người nghe; ghi khác biệt theo cảnh.
-Khi thiếu bằng chứng về giới tính/quan hệ, dùng tên, chức danh hoặc lược chủ ngữ; ghi câu cần xác minh vào followups.md.
-
-| Người nói → người nghe | Tự xưng | Gọi đối phương | Cảnh/điều kiện | Bằng chứng |
-| --- | --- | --- | --- | --- |
+Ghi quy ước chung ở đây. Tra `relationships.md` để lấy xưng hô theo cặp và theo cảnh.
+Khi thiếu bằng chứng về giới tính hoặc quan hệ, dùng tên, chức danh hoặc lược chủ ngữ.
+Ghi câu cần xác minh vào `followups.md`.
 
 ## Tên và thuật ngữ
 Chốt trong glossary.tsv; ghi rõ nhóm giữ nguyên, dịch nghĩa hoặc phiên âm.

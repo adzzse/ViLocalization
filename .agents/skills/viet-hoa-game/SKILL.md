@@ -16,24 +16,29 @@ QA và đóng gói. Chỉ dùng model hoặc dịch vụ dịch khác khi ngư�
 chấp thuận rõ ràng, kể cả khi chạy cục bộ.
 
 1. Xác định game, phiên bản, ngôn ngữ nguồn, engine, thư mục text và phạm vi.
-   Trước khi dịch lần đầu hoặc mở rộng phạm vi, lập hoặc cập nhật `SPEC.md` theo
-   [mẫu spec](../../../templates/game/SPEC.md) và tóm tắt hướng đề xuất cho người dùng.
+   Lập hoặc cập nhật `SPEC.md` theo [mẫu spec](../../../templates/game/SPEC.md)
+   khi bắt đầu game, mở rộng phạm vi hoặc đổi cách đưa tiếng Việt vào game.
    Dùng project hiện có khi tiếp tục; đọc PROGRESS.md, ENGINE.md và chạy `status`
    để đối chiếu manifest/edits trước khi giao hoặc dịch thêm lô.
 2. Trích xuất bằng adapter phù hợp. Giữ source bytes, hash và ID theo vị trí xuất hiện.
    Chứng minh identity round trip trước khi dịch. Adapter flat JSON có sẵn chỉ xử lý
    object UTF-8 với mọi value là string. Với định dạng khác, đọc mục adapter trong workflow.
+   Chia lô theo cảnh và loại text. Gửi spec mới hoặc cập nhật cùng
+   `dialogue.source.txt` từ `export-dialogue` nếu có thoại. Ghi phần nguồn chưa xuất
+   được nếu có. Chờ người dùng duyệt spec rõ ràng trước khi dịch thử hoặc ghi bản
+   dịch vào `E/`. Khi tiếp tục đúng phạm vi đã duyệt, dùng lại quyết định đó.
 3. Nghiên cứu corpus và nguồn đáng tin, ghi research_story.md và character_bible.md.
    Bằng chứng trong game ưu tiên hơn tóm tắt web. Tách xác nhận, suy luận và chưa rõ.
-   Ghi quan hệ và xưng hô có hướng vào STYLE_GUIDE.md; thuật ngữ vào glossary.tsv.
+   Ghi quan hệ và xưng hô theo cặp vào `relationships.md`. Ghi quy ước chung vào
+   STYLE_GUIDE.md và thuật ngữ vào glossary.tsv.
    Giữ danh tính/giới tính chưa rõ là unknown, dùng tên/chức danh hoặc lược chủ ngữ khi thích hợp.
-4. Chia lô theo cảnh và loại text. Dịch thử một cảnh và UI có biến hoặc mã nếu có.
+4. Dịch thử một cảnh và UI có biến hoặc mã nếu có.
    Chỉ dịch hàng loạt từ một đường nạp chữ sau khi bản thử của đường đó qua đọc ngược.
    Đọc nguyên văn từ `B/<lô>.txt`. Khi cần thêm ngữ cảnh, tra `corpus.jsonl` theo ID
    hoặc theo cảnh, gồm phần liền kề nếu cảnh bị chia lô.
-   Nạp phần cẩm nang, hồ sơ và glossary liên quan đến lô. Đọc lại khi đổi tuyến
-   nhân vật hoặc khi hướng dẫn thay đổi. Giữ đúng giọng, văn phong và các token
-   kỹ thuật theo qa.json và ENGINE.md.
+   Nạp cẩm nang, hồ sơ, `relationships.md` và glossary ở phần liên quan đến lô.
+   Đọc lại khi đổi tuyến nhân vật hoặc khi hướng dẫn thay đổi. Giữ đúng giọng,
+   văn phong và các token kỹ thuật theo qa.json và ENGINE.md.
    Trường `en` là text nguồn từ bất kỳ ngôn ngữ nào, không phải yêu cầu dịch qua tiếng Anh.
 5. Ghi mỗi ID của lô một dòng JSON `{"id":"...","vi":"..."}` vào
    `E/<batch>.part01.jsonl`. Sửa bằng revision có số đệm như part02, part03;
@@ -49,7 +54,8 @@ chấp thuận rõ ràng, kể cả khi chạy cục bộ.
 7. Xuất patch vào build/ và đối chiếu phạm vi thay đổi. Thử font dấu Việt, tràn chữ,
    UI, phụ đề và lưu/tải trên bản sao khi việc chạy game nằm trong phạm vi yêu cầu.
    Giữ backup, hash và cách rollback theo ENGINE.md. Chỉ cài hoặc publish theo yêu cầu.
-   Ghi PROGRESS.md và bàn giao riêng số mục đã dịch, phần đã rà ngôn ngữ, phần đã
-   playtest và nguồn chữ còn ngoài gói hoặc chưa kiểm kê.
+   Bàn giao `relationships.md` cạnh `dialogue.txt` ở root project. Ghi PROGRESS.md
+   và báo riêng số mục đã dịch, phần đã rà ngôn ngữ, phần đã playtest và nguồn chữ
+   còn ngoài gói hoặc chưa kiểm kê.
 
 Nguồn phương pháp và license: [docs/sources.md](../../../docs/sources.md).

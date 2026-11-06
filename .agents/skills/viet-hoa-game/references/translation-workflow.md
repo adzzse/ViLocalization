@@ -28,8 +28,10 @@ tục các phần độc lập.
 ## Context và rà thoại
 
 Lấy speaker từ nameplate/event/face code có bằng chứng; giữ unknown nếu chưa rõ.
-Giữ scene, người nghe, alias và thời điểm lộ danh tính. Research đi vào các file hiện có:
-research_story.md, character_bible.md, STYLE_GUIDE.md và glossary.tsv.
+Giữ scene, người nghe, alias và thời điểm lộ danh tính. Ghi bối cảnh và hồ sơ vào
+`research_story.md` và `character_bible.md`. Ghi từng cặp quan hệ và xưng hô vào
+`relationships.md`, kèm ID hoặc cảnh. `STYLE_GUIDE.md` giữ quy ước chung và
+`glossary.tsv` giữ thuật ngữ.
 
 Nếu người dùng cung cấp phần game trước/bản dịch tham khảo, giữ nguồn đó read-only.
 Chỉ tái dùng khi text gốc, speaker và ngữ cảnh khớp; giải quyết thuật ngữ mâu thuẫn

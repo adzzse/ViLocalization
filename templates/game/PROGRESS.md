@@ -2,6 +2,7 @@
 
 - Giai đoạn: khởi tạo; chưa có text nguồn.
 - Game/phiên bản và thư mục cài:
+- Spec đã duyệt: ngày, phạm vi và ô ngôn ngữ đã chốt.
 - Đường dịch: agent trực tiếp; ghi tool/adapter độc lập đang dùng.
 - Census: tổng đã phát hiện / đã kiểm kê đầy đủ; vùng chưa extract và lý do bỏ qua:
 - Canary, fitting và native QA: build/hash, cảnh đã thử, phần còn pending:

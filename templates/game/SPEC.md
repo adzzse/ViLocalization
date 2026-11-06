@@ -19,12 +19,15 @@
 1. **Tự chuẩn bị nguồn.** Tạo project bằng `init`, sao lưu nguồn và xác nhận hash. Ghi
    lệnh trích xuất của engine trong `ENGINE.md` và kiểm tra dựng lại nguyên bản. Chạy
    `batch`, rồi `export-dialogue` để có `B/` và `dialogue.source.txt` nếu có thoại.
-2. **Giao agent dịch.** Đưa agent corpus, lô cần xử lý và cẩm nang. Chốt xưng hô, thuật
+2. **Duyệt spec.** Gửi `SPEC.md` và bản đọc nguồn cho người dùng. Chờ duyệt trước
+   khi dịch thử hoặc ghi bản dịch vào `E/`.
+3. **Giao agent dịch.** Đưa agent corpus, lô cần xử lý và cẩm nang. Chốt xưng hô, thuật
    ngữ và thử từng đường nạp trước khi dịch rộng. Agent ghi bản dịch theo ID vào `E/`
    và rà nghĩa, thuật ngữ, token kỹ thuật.
-3. **Dựng và đóng gói.** Chạy `check` rồi `finalize` để có `final.json` và bản đối chiếu
-   `dialogue.txt`. Dùng writer đúng engine để xuất vào `build/`, đọc lại kết quả và
-   đóng gói các tệp runtime đã đổi kèm hướng dẫn cài, hoàn tác và trạng thái playtest.
+4. **Dựng và đóng gói.** Chạy `check` rồi `finalize` để có `final.json` và bản đối chiếu
+   `dialogue.txt`. Bàn giao `relationships.md` cạnh bản thoại. Dùng writer đúng
+   engine để xuất vào `build/`, đọc lại kết quả và đóng gói các tệp runtime đã đổi
+   kèm hướng dẫn cài, hoàn tác và trạng thái playtest.
 
 Lệnh và đầu vào từng bước có trong [hướng dẫn chạy thủ công](../../docs/workflow.md#tự-chuẩn-bị-nguồn-rồi-giao-agent).
 

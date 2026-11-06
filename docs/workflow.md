@@ -11,7 +11,8 @@ corpus, E/, build/ và ghi chú sống trong project. Chỉ làm việc với fi
 | --- | --- | --- |
 | Khảo sát và spec | Xác định engine, nguồn chữ và các ô ngôn ngữ | SPEC.md ghi phạm vi, độ khả thi, phương án locale và các bước dịch |
 | Extract | Corpus có ID theo vị trí; đọc và viết ngược text | Nguồn có hash; identity round trip giống byte hoặc tương đương ngữ nghĩa có giải thích |
-| Research | Đọc text game, tra nguồn, xác minh nhân vật/quan hệ | research_story.md + character_bible.md có bằng chứng và điểm chưa rõ |
+| Duyệt spec | Gửi spec và bản đọc thoại nguồn nếu có | Người dùng duyệt phạm vi và hướng triển khai trước khi dịch thử |
+| Research | Đọc text game, tra nguồn, xác minh nhân vật/quan hệ | Hồ sơ và relationships.md ghi bằng chứng và điểm chưa rõ |
 | Cẩm nang | Xưng hô có hướng, giọng văn, glossary, tên riêng | STYLE_GUIDE.md được điền cho chính game này |
 | Pilot | Một cảnh liên tục và UI có biến/thẻ; dựng và thử trong game | Token đúng; font và layout chấp nhận được trước khi dịch rộng |
 | Dịch | Đọc theo cảnh, giữ câu nguồn, viết JSONL theo batch | Mỗi ID có bản dịch; chỗ chưa chắc nằm trong followups.md |
@@ -25,10 +26,15 @@ và hướng dẫn cài/khôi phục; ghi rõ phiên bản game tương thích.
 
 ## Spec trước khi dịch
 
-`init` chép sẵn [mẫu spec](../templates/game/SPEC.md) vào `SPEC.md`. Với project cũ,
-dùng mẫu khi bắt đầu phần dịch mới. Điền từ khảo sát ban đầu và gửi file để người
-dùng xem hoặc sửa. Nếu người dùng chỉ yêu cầu khảo sát, lập spec hoặc muốn duyệt
-trước khi dịch, bàn giao ở bước này.
+`init` chép sẵn [mẫu spec](../templates/game/SPEC.md) vào `SPEC.md`. Với game mới
+hoặc khi mở rộng phạm vi, chuẩn bị nguồn và gửi `SPEC.md` cùng `dialogue.source.txt`
+nếu có thoại trích được. Nếu game chỉ có text khác, gửi danh sách lô nguồn. Ghi rõ
+những phần chưa trích được và lý do.
+
+Chờ người dùng duyệt bản spec đã gửi trước khi dịch thử hoặc ghi bản dịch vào `E/`.
+Ghi ngày, phạm vi và ô ngôn ngữ đã duyệt trong `PROGRESS.md`. Khi tiếp tục trong
+phạm vi đó, dùng lại quyết định đã chốt. Nếu đổi phạm vi hoặc phương án ô ngôn ngữ,
+trình spec cập nhật trước khi dịch phần thay đổi.
 
 Đề xuất thêm ô Tiếng Việt khi engine có đường mở rộng locale phù hợp. Nếu dùng
 một ô có sẵn, ghi rõ ô bị thay và ảnh hưởng đến các ngôn ngữ khác, giao diện và
@@ -50,8 +56,9 @@ Phần chuẩn bị chạy bằng Node.js 22+ và công cụ của engine. Chạ
    Với corpus có thoại, chạy `node scripts/workflow.mjs export-dialogue projects/my-game`
    để tạo `dialogue.source.txt` cùng kiểu trình bày với `dialogue.txt`. Cột `VI` để trống.
    Nếu adapter có cột English riêng, đặt `dialogue.en.json` cạnh corpus trước khi xuất.
-4. **Giao agent dịch.** Giao `B/manifest.json`, lô trong `B/`, phần cẩm nang liên quan và
-   `dialogue.source.txt` để đối chiếu. Agent dịch từ nguyên văn và lưu theo ID vào `E/`.
+4. **Duyệt rồi giao agent dịch.** Duyệt `SPEC.md` và giao lô trong `B/`, manifest,
+   phần cẩm nang liên quan và `dialogue.source.txt` để đối chiếu. Agent dịch từ
+   nguyên văn và lưu theo ID vào `E/`.
 5. **Dựng và đóng gói.** Dùng các lệnh [QA và tiếp tục](#qa-và-tiếp-tục) sau khi agent
    dịch và rà xong. Với engine riêng, dùng writer trong `ENGINE.md` thay cho lệnh
    `rebuild` mặc định. Mở lại gói để đối chiếu danh sách tệp và hash, kèm hướng dẫn
@@ -111,6 +118,10 @@ Nếu nguồn là tiếng Anh thì nguyên văn hiện ở `EN`. Với nguồn k
 xuất thêm `dialogue.en.json` cạnh corpus dưới dạng object `{ "ID": "tiếng Anh gốc" }`.
 `EN` hiện `[Không có]` khi nguồn thiếu mục tiếng Anh. `dialogue.txt` dùng để đọc và
 đối chiếu. Sửa bản dịch trong `E/`, rồi chạy lại `finalize` để cập nhật file.
+
+Khi bàn giao, agent cập nhật [mẫu quan hệ nhân vật](../templates/game/relationships.md)
+thành `relationships.md` cạnh `dialogue.txt`. Ghi quan hệ, xưng hô từng chiều và
+ID nguồn hoặc cảnh làm bằng chứng. Đánh dấu mục suy luận hoặc chưa xác minh.
 
 `qa.json` là các regex/rule của game: bổ sung engine tags, printf/control code hoặc
 literal `tokens` trước pilot. Mặc định chưa bao phủ mọi ngữ pháp token của mọi engine.
