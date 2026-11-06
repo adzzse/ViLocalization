@@ -139,11 +139,8 @@ export function validateTranslation(source, target, config) {
   return errors;
 }
 
-export function inspectProject(work) {
-  const { rows: corpus, project } = loadCorpus(work);
-  const byId = new Map(corpus.map(row => [row.id, row]));
+function loadManifest(work, corpus) {
   const manifest = readJson(path.join(work, 'B/manifest.json'));
-  const config = readJson(path.join(work, 'qa.json'));
   const expected = new Set(corpus.filter(row => row.en.trim()).map(row => row.id));
   const assigned = new Set();
   const names = new Set();
@@ -156,6 +153,14 @@ export function inspectProject(work) {
     }
   }
   if (assigned.size !== expected.size) fail('Manifest does not cover every source ID.');
+  return { manifest, expected };
+}
+
+export function inspectProject(work) {
+  const { rows: corpus, project } = loadCorpus(work);
+  const { manifest, expected } = loadManifest(work, corpus);
+  const byId = new Map(corpus.map(row => [row.id, row]));
+  const config = readJson(path.join(work, 'qa.json'));
   const edits = new Map();
   for (const file of fs.readdirSync(path.join(work, 'E')).filter(name => name.endsWith('.jsonl')).sort()) {
     const batch = manifest.find(item => file.startsWith(item.name + '.'));
@@ -217,9 +222,19 @@ function renderDialogue(work, { corpus, manifest, translations, language }) {
     const reference = Object.hasOwn(english, id) ? english[id] : '';
     const englishText = englishSource ? row.en : reference;
     lines.push(field('EN', englishText.trim() ? englishText : '[Không có]'));
-    lines.push(field('VI', translations[id]), '');
+    lines.push(field('VI', translations?.[id] ?? ''), '');
   }
   return lines.join('\n') + '\n';
+}
+
+function exportDialogue(work) {
+  const { rows: corpus, project } = loadCorpus(work);
+  const { manifest } = loadManifest(work, corpus);
+  const report = renderDialogue(work, { corpus, manifest, language: project.source_language });
+  if (!report) fail('No dialogue rows in the batch manifest.');
+  const file = path.join(work, 'dialogue.source.txt');
+  write(file, report);
+  return file;
 }
 
 export function finalize(work) {
@@ -251,15 +266,16 @@ export function rebuild(work) {
 
 function main() {
   const [command, input, extra, ...rest] = process.argv.slice(2);
-  const arity = { init: 2, extract: 2, batch: 1, check: 1, status: 1, finalize: 1, rebuild: 1 };
+  const arity = { init: 2, extract: 2, batch: 1, 'export-dialogue': 1, check: 1, status: 1, finalize: 1, rebuild: 1 };
   if (!(command in arity) || rest.length || process.argv.slice(3).length !== arity[command]) {
-    fail('Usage: workflow.mjs init <slug> <source-language> | extract <project> <flat-json> | batch|check|status|finalize|rebuild <project>');
+    fail('Usage: workflow.mjs init <slug> <source-language> | extract <project> <flat-json> | batch|export-dialogue|check|status|finalize|rebuild <project>');
   }
   const work = path.resolve(input);
   switch (command) {
     case 'init': return initProject(input, extra);
     case 'extract': return extractFlatJson(work, path.resolve(extra));
     case 'batch': return buildBatches(work).map(({ name, lines }) => ({ name, lines }));
+    case 'export-dialogue': return exportDialogue(work);
     case 'check': { const { total, translated } = checked(work); return { total, translated, errors: 0 }; }
     case 'status': { const { total, translated, errors } = inspectProject(work); return { total, translated, errors: errors.length, first_errors: errors.slice(0, 10) }; }
     case 'finalize': return finalize(work);

@@ -14,12 +14,19 @@
 - **Cách đưa tiếng Việt vào game** — <thêm ô Tiếng Việt, thay ô nào, hoặc cần thử thêm>
 - **Lý do và ảnh hưởng** — <game hỗ trợ thêm ô đến đâu, ngôn ngữ nào bị thay, ảnh hưởng UI và lưu/tải cần kiểm tra>
 
-## Các bước dịch
+## Quy trình thực hiện
 
-1. Kiểm kê nguồn chữ trong phạm vi và kiểm tra trích xuất rồi dựng lại nguyên bản.
-2. Chốt xưng hô và thuật ngữ. Dựng bản thử cho từng đường nạp chữ cần dùng.
-3. Codex dịch theo cảnh hoặc lô. Rà nghĩa, thuật ngữ và token kỹ thuật.
-4. Chốt bản dịch, dựng patch và kiểm tra theo phạm vi. Ghi phần còn chờ playtest.
+1. **Tự chuẩn bị nguồn.** Tạo project bằng `init`, sao lưu nguồn và xác nhận hash. Ghi
+   lệnh trích xuất của engine trong `ENGINE.md` và kiểm tra dựng lại nguyên bản. Chạy
+   `batch`, rồi `export-dialogue` để có `B/` và `dialogue.source.txt` nếu có thoại.
+2. **Giao agent dịch.** Đưa agent corpus, lô cần xử lý và cẩm nang. Chốt xưng hô, thuật
+   ngữ và thử từng đường nạp trước khi dịch rộng. Agent ghi bản dịch theo ID vào `E/`
+   và rà nghĩa, thuật ngữ, token kỹ thuật.
+3. **Dựng và đóng gói.** Chạy `check` rồi `finalize` để có `final.json` và bản đối chiếu
+   `dialogue.txt`. Dùng writer đúng engine để xuất vào `build/`, đọc lại kết quả và
+   đóng gói các tệp runtime đã đổi kèm hướng dẫn cài, hoàn tác và trạng thái playtest.
+
+Lệnh và đầu vào từng bước có trong [hướng dẫn chạy thủ công](../../docs/workflow.md#tự-chuẩn-bị-nguồn-rồi-giao-agent).
 
 **Kết quả cần giao** — <spec, bản thử hoặc bản vá, kèm tiêu chí đạt tương ứng>
 

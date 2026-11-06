@@ -35,6 +35,28 @@ một ô có sẵn, ghi rõ ô bị thay và ảnh hưởng đến các ngôn ng
 lưu/tải. Ghi điểm chưa rõ cùng phép thử nhỏ cần làm. Các lệnh, hash và bằng chứng
 chi tiết đặt ở `ENGINE.md`, tiến độ thực tế đặt ở `PROGRESS.md`.
 
+## Tự chuẩn bị nguồn rồi giao agent
+
+Phần chuẩn bị chạy bằng Node.js 22+ và công cụ của engine. Chạy các lệnh từ root ViLocalization.
+
+1. **Tạo project.** Chạy `node scripts/workflow.mjs init my-game ja`, thay slug và mã
+   ngôn ngữ nguồn cho đúng game. Nếu adapter có bước khởi tạo riêng, làm theo `ENGINE.md`.
+   Khảo sát, điền `SPEC.md` và sao lưu dữ liệu nguồn trước khi trích xuất.
+2. **Trích xuất.** Với JSON phẳng, chạy `node scripts/workflow.mjs extract projects/my-game D:/backup/strings.ja.json`.
+   Với engine khác, chạy lệnh trích xuất trong `ENGINE.md`. Kiểm tra hash và round trip,
+   rồi xác nhận `corpus.jsonl` có ID và ngữ cảnh. Adapter JSON phẳng mặc định gán `text`.
+   Nếu đã xác minh một mục là thoại, bổ sung `kind: "dlg"`, cảnh và thứ tự trước khi chia lô.
+3. **Chia lô và xuất bản đọc.** Chạy `node scripts/workflow.mjs batch projects/my-game`.
+   Với corpus có thoại, chạy `node scripts/workflow.mjs export-dialogue projects/my-game`
+   để tạo `dialogue.source.txt` cùng kiểu trình bày với `dialogue.txt`. Cột `VI` để trống.
+   Nếu adapter có cột English riêng, đặt `dialogue.en.json` cạnh corpus trước khi xuất.
+4. **Giao agent dịch.** Giao `B/manifest.json`, lô trong `B/`, phần cẩm nang liên quan và
+   `dialogue.source.txt` để đối chiếu. Agent dịch từ nguyên văn và lưu theo ID vào `E/`.
+5. **Dựng và đóng gói.** Dùng các lệnh [QA và tiếp tục](#qa-và-tiếp-tục) sau khi agent
+   dịch và rà xong. Với engine riêng, dùng writer trong `ENGINE.md` thay cho lệnh
+   `rebuild` mặc định. Mở lại gói để đối chiếu danh sách tệp và hash, kèm hướng dẫn
+   phiên bản, cài đặt và hoàn tác.
+
 ## Corpus và bản dịch
 
 `corpus.jsonl`: một object mỗi dòng, mỗi vị trí xuất hiện là một ID riêng:

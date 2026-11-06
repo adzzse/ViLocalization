@@ -203,6 +203,10 @@ test('finalize exports scene-ordered source, English references and current Viet
   const [dialogueBatch, textBatch] = buildBatches(f.work);
   const english = path.join(f.work, 'dialogue.en.json');
   save(english, { later: 'Later\n<color=red>next</color>' });
+  const source = spawnSync(process.execPath, [path.join(ROOT, 'scripts/workflow.mjs'), 'export-dialogue', f.work], { encoding: 'utf8' });
+  assert.equal(source.status, 0, source.stderr);
+  assert.equal(fs.existsSync(path.join(f.work, 'final.json')), false);
+  const sourceFile = path.join(f.work, 'dialogue.source.txt');
   f.edits([{ id: 'later', vi: 'Sau\n<color=red>tiếp</color>' }, { id: 'earlier', vi: 'Trước' }], '01', dialogueBatch.name);
   f.edits([{ id: 'earlier', vi: 'Lúc trước' }], '02', dialogueBatch.name);
   f.edits([{ id: 'menu', vi: 'Cài đặt' }], '01', textBatch.name);
@@ -215,6 +219,7 @@ test('finalize exports scene-ordered source, English references and current Viet
     'EN: Later', '    <color=red>next</color>', 'VI: Sau', '    <color=red>tiếp</color>', '', '',
   ].join('\n');
   assert.equal(fs.readFileSync(dialogue, 'utf8'), expected);
+  assert.equal(fs.readFileSync(sourceFile, 'utf8'), expected.replace('VI: Lúc trước', 'VI: ').replace('VI: Sau\n    <color=red>tiếp</color>', 'VI: '));
   const final = fs.readFileSync(path.join(f.work, 'final.json'), 'utf8');
   save(english, { menu: 'Settings' });
   assert.throws(() => finalize(f.work), /dialogue.en.json must map dialogue IDs/);
