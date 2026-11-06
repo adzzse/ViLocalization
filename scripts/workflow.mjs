@@ -9,6 +9,7 @@ const readJson = file => JSON.parse(decodeUtf8(fs.readFileSync(file)));
 const hash = value => createHash('sha256').update(value).digest('hex');
 const fail = message => { throw new Error(message); };
 const json = value => JSON.stringify(value, null, 2) + '\n';
+const languageTag = /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/;
 
 function decodeUtf8(bytes) {
   try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
@@ -24,7 +25,7 @@ function write(file, value) {
 export function initProject(slug, language, base = path.join(ROOT, 'projects')) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 64 ||
       /^(con|prn|aux|nul|com[0-9]|lpt[0-9])$/i.test(slug)) fail('Use a short lowercase game slug, e.g. my-game.');
-  if (!/^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(language)) fail('Specify a source language, e.g. en, ja, zh-CN.');
+  if (!languageTag.test(language)) fail('Specify a source language, e.g. en, ja, zh-CN.');
   const work = path.join(base, slug);
   fs.mkdirSync(base, { recursive: true });
   fs.mkdirSync(work); // An existing project must never be replaced.
@@ -94,7 +95,7 @@ function loadCorpus(work) {
       fail('Corpus source/IDs changed since extraction. Create a new project for updated game text.');
     }
   }
-  return rows;
+  return { rows, project };
 }
 
 export function buildBatches(work) {
@@ -139,7 +140,7 @@ export function validateTranslation(source, target, config) {
 }
 
 export function inspectProject(work) {
-  const corpus = loadCorpus(work);
+  const { rows: corpus, project } = loadCorpus(work);
   const byId = new Map(corpus.map(row => [row.id, row]));
   const manifest = readJson(path.join(work, 'B/manifest.json'));
   const config = readJson(path.join(work, 'qa.json'));
@@ -179,7 +180,7 @@ export function inspectProject(work) {
     }
     translations[id] = value;
   }
-  return { total: expected.size, translated: edits.size, errors, translations };
+  return { total: expected.size, translated: edits.size, errors, translations, corpus, manifest, language: project.source_language };
 }
 
 function checked(work) {
@@ -188,10 +189,49 @@ function checked(work) {
   return result;
 }
 
+function renderDialogue(work, { corpus, manifest, translations, language }) {
+  const dialogue = new Map(corpus.filter(row => row.kind === 'dlg').map(row => [row.id, row]));
+  const ids = manifest.flatMap(batch => batch.ids).filter(id => dialogue.has(id));
+  if (!ids.length) return;
+
+  const englishFile = path.join(work, 'dialogue.en.json');
+  const english = fs.existsSync(englishFile) ? readJson(englishFile) : {};
+  if (!english || typeof english !== 'object' || Array.isArray(english) ||
+      Object.entries(english).some(([id, value]) => !dialogue.has(id) || typeof value !== 'string')) {
+    fail('dialogue.en.json must map dialogue IDs to English strings.');
+  }
+
+  const sourceLabel = typeof language === 'string' && languageTag.test(language) ? language.toUpperCase() : 'SOURCE';
+  const englishSource = /^EN(?:-|$)/.test(sourceLabel);
+  const field = (label, value) => label + ': ' + value.replace(/\r\n?|\n/g, '\n    ');
+  const inline = value => String(value).replace(/[\r\n]+/g, ' ');
+  const lines = ['# Hội thoại', ''];
+  let previousScene;
+  for (const id of ids) {
+    const row = dialogue.get(id);
+    const scene = inline(row.scene ?? '(chưa rõ)');
+    if (scene !== previousScene) lines.push('## CẢNH ' + scene, '');
+    previousScene = scene;
+    lines.push('@' + id + (row.speaker ? ' | ' + inline(row.speaker) : ''));
+    if (!englishSource) lines.push(field(sourceLabel, row.en));
+    const reference = Object.hasOwn(english, id) ? english[id] : '';
+    const englishText = englishSource ? row.en : reference;
+    lines.push(field('EN', englishText.trim() ? englishText : '[Không có]'));
+    lines.push(field('VI', translations[id]), '');
+  }
+  return lines.join('\n') + '\n';
+}
+
 export function finalize(work) {
   const result = checked(work);
+  const report = renderDialogue(work, result);
   write(path.join(work, 'final.json'), json(result.translations));
-  return { entries: Object.keys(result.translations).length, errors: 0 };
+  const summary = { entries: Object.keys(result.translations).length, errors: 0 };
+  if (report) {
+    summary.dialogue = path.join(work, 'dialogue.txt');
+    write(summary.dialogue, report);
+  }
+  return summary;
 }
 
 export function rebuild(work) {

@@ -71,6 +71,13 @@ timing, mã điều khiển và xuống dòng. `finalize` không dùng bản cũ
 Printf không đánh số (`%s`, `%d`) phải giữ thứ tự đối số; dạng đánh số (`%1$s`, `%2$d`)
 được đổi vị trí. Literal `%%` được giữ riêng, không coi phần sau là một đối số mới.
 
+Khi QA đạt, `finalize` tự tạo `dialogue.txt` ở root project nếu có mục `dlg` trong
+manifest. File theo thứ tự lô, giữ cảnh, ID, người nói, nguyên văn và bản Việt đã chốt.
+Nếu nguồn là tiếng Anh thì nguyên văn hiện ở `EN`. Với nguồn khác, adapter có thể
+xuất thêm `dialogue.en.json` cạnh corpus dưới dạng object `{ "ID": "tiếng Anh gốc" }`.
+`EN` hiện `[Không có]` khi nguồn thiếu mục tiếng Anh. `dialogue.txt` dùng để đọc và
+đối chiếu. Sửa bản dịch trong `E/`, rồi chạy lại `finalize` để cập nhật file.
+
 `qa.json` là các regex/rule của game: bổ sung engine tags, printf/control code hoặc
 literal `tokens` trước pilot. Mặc định chưa bao phủ mọi ngữ pháp token của mọi engine.
 Rule có thể báo nhầm với dấu ngoặc trong văn tự nhiên: xác nhận đó là text hay mã

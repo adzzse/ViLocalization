@@ -37,6 +37,7 @@ test('Japanese to Vietnamese completes the CLI-backed batch pipeline without cha
   const target = JSON.parse('{"menu":"Chơi mới","hello":"Chào, {PLAYER}!","__proto__":"Bí mật","blank":""}');
   f.edits(Object.entries(target).filter(([id]) => id !== 'blank').map(([id, vi]) => ({ id, vi })));
   assert.deepEqual(finalize(f.work), { entries: 4, errors: 0 });
+  assert.equal(fs.existsSync(path.join(f.work, 'dialogue.txt')), false);
   assert.deepEqual(read(rebuild(f.work)), target);
   assert.deepEqual(fs.readFileSync(f.input), f.bytes);
   assert.deepEqual(fs.readFileSync(path.join(f.work, 'original/strings.json')), f.bytes);
@@ -186,6 +187,39 @@ test('dialogue batching keeps occurrences distinct and sorts inside each scene',
   assert.deepEqual(manifest[0].ids, ['again', 'greeting']);
   assert.equal(manifest[0].lines, 2);
   assert.throws(() => buildBatches(f.work), /already exist/);
+  f.edits([{ id: 'again', vi: 'Chào, {PLAYER}!' }, { id: 'greeting', vi: 'Xin chào, {PLAYER}!' }], '01', manifest[0].name);
+  const { dialogue } = finalize(f.work);
+  assert.match(fs.readFileSync(dialogue, 'utf8'), /@again \| B\nEN: Hello, \{PLAYER\}!\nVI: Chào, \{PLAYER\}!/);
+});
+
+test('finalize exports scene-ordered source, English references and current Vietnamese dialogue', t => {
+  const f = fixture(t, { later: '後\n<color=red>あと</color>', earlier: '前', menu: '設定' }, 'ja');
+  const corpus = path.join(f.work, 'corpus.jsonl');
+  const rows = fs.readFileSync(corpus, 'utf8').trim().split('\n').map(JSON.parse);
+  rows[0] = { ...rows[0], kind: 'dlg', scene: 'scene-a', order: 2, speaker: 'Mira' };
+  rows[1] = { ...rows[1], kind: 'dlg', scene: 'scene-a', order: 1 };
+  fs.writeFileSync(corpus, jsonl(rows));
+  fs.unlinkSync(path.join(f.work, 'B/manifest.json'));
+  const [dialogueBatch, textBatch] = buildBatches(f.work);
+  const english = path.join(f.work, 'dialogue.en.json');
+  save(english, { later: 'Later\n<color=red>next</color>' });
+  f.edits([{ id: 'later', vi: 'Sau\n<color=red>tiếp</color>' }, { id: 'earlier', vi: 'Trước' }], '01', dialogueBatch.name);
+  f.edits([{ id: 'earlier', vi: 'Lúc trước' }], '02', dialogueBatch.name);
+  f.edits([{ id: 'menu', vi: 'Cài đặt' }], '01', textBatch.name);
+
+  const { dialogue } = finalize(f.work);
+  const expected = [
+    '# Hội thoại', '', '## CẢNH scene-a', '',
+    '@earlier', 'JA: 前', 'EN: [Không có]', 'VI: Lúc trước', '',
+    '@later | Mira', 'JA: 後', '    <color=red>あと</color>',
+    'EN: Later', '    <color=red>next</color>', 'VI: Sau', '    <color=red>tiếp</color>', '', '',
+  ].join('\n');
+  assert.equal(fs.readFileSync(dialogue, 'utf8'), expected);
+  const final = fs.readFileSync(path.join(f.work, 'final.json'), 'utf8');
+  save(english, { menu: 'Settings' });
+  assert.throws(() => finalize(f.work), /dialogue.en.json must map dialogue IDs/);
+  assert.equal(fs.readFileSync(dialogue, 'utf8'), expected);
+  assert.equal(fs.readFileSync(path.join(f.work, 'final.json'), 'utf8'), final);
 });
 
 test('per-row literal engine tokens are checked', t => {
