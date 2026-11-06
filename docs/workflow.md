@@ -9,7 +9,7 @@ corpus, E/, build/ và ghi chú sống trong project. Chỉ làm việc với fi
 
 | Mốc | Công việc | Điều kiện đi tiếp |
 | --- | --- | --- |
-| Khảo sát | Tên/phiên bản, ngôn ngữ, engine, text, archive, font, mod đang có | ENGINE.md ghi đúng phạm vi và công cụ |
+| Khảo sát và spec | Xác định engine, nguồn chữ và các ô ngôn ngữ | SPEC.md ghi phạm vi, độ khả thi, phương án locale và các bước dịch |
 | Extract | Corpus có ID theo vị trí; đọc và viết ngược text | Nguồn có hash; identity round trip giống byte hoặc tương đương ngữ nghĩa có giải thích |
 | Research | Đọc text game, tra nguồn, xác minh nhân vật/quan hệ | research_story.md + character_bible.md có bằng chứng và điểm chưa rõ |
 | Cẩm nang | Xưng hô có hướng, giọng văn, glossary, tên riêng | STYLE_GUIDE.md được điền cho chính game này |
@@ -22,6 +22,18 @@ corpus, E/, build/ và ghi chú sống trong project. Chỉ làm việc với fi
 Chỉ cài vào game hoặc phát hành khi nằm trong yêu cầu hiện tại. Giữ game đóng
 khi thay file và giữ backup ngoài thư mục bản vá. Xuất patch chỉ gồm file đổi
 và hướng dẫn cài/khôi phục; ghi rõ phiên bản game tương thích.
+
+## Spec trước khi dịch
+
+`init` chép sẵn [mẫu spec](../templates/game/SPEC.md) vào `SPEC.md`. Với project cũ,
+dùng mẫu khi bắt đầu phần dịch mới. Điền từ khảo sát ban đầu và gửi file để người
+dùng xem hoặc sửa. Nếu người dùng chỉ yêu cầu khảo sát, lập spec hoặc muốn duyệt
+trước khi dịch, bàn giao ở bước này.
+
+Đề xuất thêm ô Tiếng Việt khi engine có đường mở rộng locale phù hợp. Nếu dùng
+một ô có sẵn, ghi rõ ô bị thay và ảnh hưởng đến các ngôn ngữ khác, giao diện và
+lưu/tải. Ghi điểm chưa rõ cùng phép thử nhỏ cần làm. Các lệnh, hash và bằng chứng
+chi tiết đặt ở `ENGINE.md`, tiến độ thực tế đặt ở `PROGRESS.md`.
 
 ## Corpus và bản dịch
 

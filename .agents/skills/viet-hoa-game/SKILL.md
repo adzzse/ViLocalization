@@ -16,6 +16,8 @@ QA và đóng gói. Chỉ dùng model hoặc dịch vụ dịch khác khi ngư�
 chấp thuận rõ ràng, kể cả khi chạy cục bộ.
 
 1. Xác định game, phiên bản, ngôn ngữ nguồn, engine, thư mục text và phạm vi.
+   Trước khi dịch lần đầu hoặc mở rộng phạm vi, lập hoặc cập nhật `SPEC.md` theo
+   [mẫu spec](../../../templates/game/SPEC.md) và tóm tắt hướng đề xuất cho người dùng.
    Dùng project hiện có khi tiếp tục; đọc PROGRESS.md, ENGINE.md và chạy `status`
    để đối chiếu manifest/edits trước khi giao hoặc dịch thêm lô.
 2. Trích xuất bằng adapter phù hợp. Giữ source bytes, hash và ID theo vị trí xuất hiện.

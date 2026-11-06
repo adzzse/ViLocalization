@@ -5,7 +5,7 @@ Mỗi game có cẩm nang xưng hô, hồ sơ nhân vật, thuật ngữ, các l
 Mặc định dịch trực tiếp bằng agent đang dùng, không cần thêm API key.
 Các công cụ chia lô, QA, fitting và giải nén được quản lý ngay trong repo.
 
-Luồng: **khảo sát → extract/round trip → research → cẩm nang → lô thử → dịch → QA → rebuild → playtest → patch**.
+Luồng **khảo sát → spec → extract/round trip → research → cẩm nang → lô thử → dịch → QA → rebuild → playtest → patch**.
 
 ## Bắt đầu
 
@@ -27,8 +27,8 @@ Mở project này trong Codex rồi gửi:
 
 ```text
 Dùng $viet-hoa-game để Việt hóa game <tên + phiên bản> từ <ngôn ngữ>.
-Game ở <đường dẫn>. Hãy khảo sát engine, text và font, lập corpus và
-chứng minh round trip trước; nghiên cứu xưng hô rồi dịch thử một cảnh.
+Game ở <đường dẫn>. Hãy khảo sát và lập SPEC.md để tôi xem trước khi dịch.
+Ghi nguồn chữ, độ khả thi và đề xuất thêm ô Tiếng Việt hay dùng một ô sẵn có.
 ```
 
 Skill nằm tại `.agents/skills/viet-hoa-game/SKILL.md`, theo
