@@ -2,7 +2,8 @@
 
 Công cụ được lưu trực tiếp trong vendor/. sources.lock.json nhóm file theo chức
 năng, ghi đường dẫn local và SHA256; `npm run check:sources` kiểm tra offline.
-Metadata không tham gia nạp module hay chọn quy trình dịch.
+Manifest dùng kiểm tra nguồn offline; cầu nối WOLF cũng đọc `asset_sha256`
+để xác minh executable trước khi chạy. Nó không chọn engine hoặc thay quy trình dịch.
 
 ## Công cụ hiện có
 
@@ -11,6 +12,7 @@ Metadata không tham gia nạp module hay chọn quy trình dịch.
 | Chia lô | vendor/vh-workflow/build_batches.cjs | [MIT](../vendor/licenses/VH-Workflow-Skill.txt) |
 | Fitting chữ | vendor/text-fitting/layout.py và test_layout.py | [MIT](../vendor/licenses/python-tools-MIT.txt) |
 | Giải nén ASAR | vendor/asar/unpack_asar.py | [MIT](../vendor/licenses/python-tools-MIT.txt) |
+| WOLF RPG binary reader/writer | vendor/wolftl/WolfTL.exe | [MIT](../vendor/licenses/WolfTL.txt), kèm notices [CLI11](../vendor/licenses/WolfTL-CLI11.txt), [LZ4](../vendor/licenses/WolfTL-lz4.txt), [JSON](../vendor/licenses/WolfTL-json.txt) |
 
 Thông báo bản quyền và toàn văn license phải được giữ khi phân phối mã có nguồn
 gốc bên thứ ba. Giấy phép công cụ không cấp quyền đối với tài sản game.

@@ -6,6 +6,7 @@ Ghi dấu hiệu, version và hợp đồng extract/rebuild vào ENGINE.md trư�
 | Dấu hiệu | Hướng khảo sát | Khả năng có sẵn trong ViLocalization |
 | --- | --- | --- |
 | Bảng JSON UTF-8 phẳng, mọi value là string | Đối chiếu key và nơi game nạp file | Adapter extract/rebuild hiện có |
+| BasicData/CommonEvent.dat, database .dat/.project và MapData/*.mps | WOLF RPG; chạy scripts/wolf_rpg.py theo docs/tools.md, kiểm identity trước khi xuất corpus | WolfTL v0.6.2 trên Windows; chuỗi database/runtime cần rà chọn, font/playtest theo game |
 | resources/app.asar, Electron/Tyrano | ASAR chứa data/scenario/scripts; theo resource loader | Script giải nén offline; parser/repack vẫn theo game |
 | data/System.json hoặc www/data, js/rpg_*.js/rmmz_*.js | RPG Maker MV/MZ, event 101/401 và plugin | Cần adapter giữ block thoại và mã plugin; không đưa vào adapter JSON phẳng |
 | Data/*.rvdata2, Game.rgss3a | RPG Maker VX Ace/Marshal/archive | Chọn đúng reader/writer theo format sau khi khảo sát |

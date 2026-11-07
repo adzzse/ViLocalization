@@ -67,10 +67,12 @@ Các công cụ nằm trong `vendor/`, kèm license và SHA256
 ở `sources.lock.json`. `check:sources` kiểm tra file local, không truy cập mạng hay clone repo.
 
 Skill hiện tại dùng thêm census/coverage, canary, rà thoại theo cảnh, fitting, kiểm tra
-save/load và kiểm chứng patch. Hai công cụ Python chạy độc lập:
+save/load và kiểm chứng patch. Các công cụ hỗ trợ:
 
 - `scripts/fit_text.py`: gợi ý ngắt dòng theo width/số hàng, không sửa file đầu vào.
 - `vendor/asar/unpack_asar.py`: giải nén ASAR offline ra thư mục mới, giữ archive nguồn.
+- `scripts/wolf_rpg.py`: cầu nối WOLF RPG trên Windows bằng WolfTL đã ghim phiên bản;
+  kiểm tra round trip từng byte, xuất corpus và đọc ngược bản dựng. Xem [lệnh WOLF RPG](docs/tools.md#wolf-rpg-trên-windows).
 
 - [Workflow, schema và adapter engine](docs/workflow.md)
 - [Dùng các công cụ hỗ trợ](docs/tools.md)
@@ -82,7 +84,9 @@ save/load và kiểm chứng patch. Hai công cụ Python chạy độc lập:
 Repo này chứa workflow, mẫu và test; **hãy backup bản dịch trong projects/ riêng**.
 Không đưa file game hay API key lên repo workflow.
 
-Adapter dựng sẵn chỉ hỗ trợ **JSON phẳng UTF-8 có value là string**.
+Lệnh `workflow.mjs extract/rebuild` tích hợp chỉ hỗ trợ **JSON phẳng UTF-8 có value là string**.
+WOLF RPG có đường riêng qua WolfTL cho dữ liệu rời vượt qua kiểm tra round trip;
+database và chuỗi runtime cần rà chọn trước khi chia lô, font/playtest vẫn kiểm theo game.
 RPG Maker, Ren'Py, Unity, Unreal… cần adapter/công cụ phù hợp sau khi khảo sát game;
 chưa có cam kết extract/repack tự động cho mọi engine.
 QA kiểm tra cấu trúc, không chứng minh dịch đúng nghĩa hay font hiển thị đúng.

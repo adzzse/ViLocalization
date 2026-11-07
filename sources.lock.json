@@ -33,5 +33,48 @@
         "sha256": "291625c853877e41b5fbbd37bede954782eb5871e4739a6d120c567b9ac53dca"
       }
     ]
+  },
+  "WolfTL": {
+    "url": "https://github.com/Sinflower/WolfTL",
+    "commit": "77aca5017170d1c22190e695c60e4c9de75773e4",
+    "release": "v0.6.2",
+    "asset_sha256": "a66ffcdb8efa6340b6003cb0afe0cb2bcf3aba5c14499d0b67f8fb868bcfc276",
+    "files": [
+      {
+        "upstream": "releases/download/v0.6.2/WolfTL.exe",
+        "local": "vendor/wolftl/WolfTL.exe",
+        "modified": false,
+        "upstream_sha256": "a66ffcdb8efa6340b6003cb0afe0cb2bcf3aba5c14499d0b67f8fb868bcfc276",
+        "sha256": "a66ffcdb8efa6340b6003cb0afe0cb2bcf3aba5c14499d0b67f8fb868bcfc276"
+      },
+      {
+        "upstream": "LICENSE",
+        "local": "vendor/licenses/WolfTL.txt",
+        "modified": false,
+        "upstream_sha256": "50ca4b1003f6cc6c19576315acc2e965f0625da5a83225f08e3b8ac8f33f373b",
+        "sha256": "50ca4b1003f6cc6c19576315acc2e965f0625da5a83225f08e3b8ac8f33f373b"
+      },
+      {
+        "upstream": "WolfTL/3rdParty/CLI11/LICENSE",
+        "local": "vendor/licenses/WolfTL-CLI11.txt",
+        "modified": false,
+        "upstream_sha256": "39f8fc9272559f4d63c02f5a06fd1bd8f7502cf1312bd2b380508e4d64338c6a",
+        "sha256": "39f8fc9272559f4d63c02f5a06fd1bd8f7502cf1312bd2b380508e4d64338c6a"
+      },
+      {
+        "upstream": "WolfTL/3rdParty/lz4/LICENSE",
+        "local": "vendor/licenses/WolfTL-lz4.txt",
+        "modified": false,
+        "upstream_sha256": "8b58c446121a109ccf32edc094bba3010a3d85e4ee3702950db55e4d3e87736c",
+        "sha256": "8b58c446121a109ccf32edc094bba3010a3d85e4ee3702950db55e4d3e87736c"
+      },
+      {
+        "upstream": "WolfTL/3rdParty/nlohmann/LICENSE.MIT",
+        "local": "vendor/licenses/WolfTL-json.txt",
+        "modified": false,
+        "upstream_sha256": "d64d1b4d948aa7751cfb613c02dc246aab7b358d760053e6580f01affe946906",
+        "sha256": "d64d1b4d948aa7751cfb613c02dc246aab7b358d760053e6580f01affe946906"
+      }
+    ]
   }
 }

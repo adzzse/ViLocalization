@@ -53,6 +53,67 @@ lỗi thay vì xuất kết quả thiếu mà coi như đầy đủ.
 Chọn parser theo resource loader, giữ encoding/byte spans và chứng minh round trip
 trước khi dịch. Xem [engine routing](../.agents/skills/viet-hoa-game/references/engine-routing.md).
 
+## WOLF RPG trên Windows
+
+`scripts/wolf_rpg.py` dùng WolfTL v0.6.2 có sẵn trong `vendor/wolftl/`, chạy offline
+và xác minh SHA256 trước mỗi lần gọi. Cần Windows, Python 3.10+ và Node.js 22+;
+không cần cài package npm/pip. Nguồn và giấy phép ở [sources.md](sources.md),
+quyết định chọn công cụ ở [nghiên cứu WOLF RPG](research/wolf-rpg-reader-writer.md).
+
+Khởi tạo project mới cho từng phiên bản, rồi truyền thư mục `Data` đã giải nén:
+
+```powershell
+node scripts/workflow.mjs init my-wolf-1-0 en
+python -X utf8 scripts/wolf_rpg.py extract projects/my-wolf-1-0 "D:/Games/MyWolf/Data"
+```
+
+Đổi `en` theo ngôn ngữ thực tế. Công cụ sao chép CommonEvent.dat, Game.dat nếu có,
+các cặp database `.dat`/`.project` và map `.mps` vào `original/wolf/`.
+WolfTL chỉ chạy trên bản sao. Trước khi xuất corpus, công cụ yêu cầu danh sách
+file dựng lại khớp đầy đủ và **giống từng byte**; map bị WolfTL bỏ qua cũng làm
+bước này thất bại. File không xử lý trong BasicData được liệt kê ở `wolf-report.json`.
+
+`corpus.jsonl` mặc định chọn Message 101, Choices 102, Picture 150 kiểu text và
+tiêu đề/thông báo trong Game.dat. Mỗi vị trí có ID, file, đường dẫn trường,
+cảnh và thứ tự riêng; chưa có bằng chứng speaker thì giữ `unknown`.
+Các mã WOLF (kể cả biến lồng nhau) được ghi vào `tokens`; qa.json được bổ sung
+kiểm thứ tự mã điều khiển hiển thị. Giữ nguyên cả `tokens` khi rà/chọn corpus.
+Writer kiểm lại toàn bộ chuỗi mã theo thứ tự bằng bộ đọc ngoặc cân bằng, gồm
+cả đối số lồng nhau mà regex QA chung không phân tích đầy đủ.
+`review-candidates.jsonl` chứa các string argument khác, tên record và value
+chuỗi database, gồm cả identifier, đường dẫn asset và comment. Rà trường/ngữ cảnh,
+chép **nguyên dòng đã chọn** sang corpus trước khi `batch`; giữ ID, key và en.
+Tên font, tên trường schema và metadata editor không thuộc danh sách cần dịch mặc định.
+
+Chuẩn bị spec, bản đọc thoại nguồn và cẩm nang theo workflow trước khi dịch:
+
+```powershell
+node scripts/workflow.mjs batch projects/my-wolf-1-0
+node scripts/workflow.mjs export-dialogue projects/my-wolf-1-0
+```
+
+Sau khi có bản dịch trong `E/`, dùng QA/finalize hiện có và writer riêng:
+
+```powershell
+node scripts/workflow.mjs check projects/my-wolf-1-0
+node scripts/workflow.mjs finalize projects/my-wolf-1-0
+python -X utf8 scripts/wolf_rpg.py rebuild projects/my-wolf-1-0 projects/my-wolf-1-0/build/pilot-01
+```
+
+Project giữ `adapter: null`; lệnh Node `rebuild` dành cho flat JSON sẽ từ chối.
+Writer WOLF kiểm hash nguồn/dump, ID/nguyên văn corpus, QA và tính mới của final.json;
+sau đó đọc ngược toàn bộ JSON để so cả text lẫn các trường còn lại. Output phải là
+**thư mục mới trong build/**. Chọn tên khác cho lượt dựng tiếp theo.
+Gói chứa chỉ file runtime đã đổi dưới `data/` và `patch-manifest.json` kèm hash
+trước/sau; chưa cài vào game. Bản identity không đổi chữ sẽ tạo manifest với 0 file.
+
+Giới hạn: đây chưa phải census toàn bộ game. Chữ trong ảnh, metadata chưa xử lý,
+lookup theo tên và chuỗi runtime cần khảo sát riêng. Archive `.wolf` phải được
+chuẩn bị thành dữ liệu rời trước. Game mã hóa/nén hoặc serializer đổi byte sẽ bị
+gate identity từ chối, kể cả khi WolfTL có thể đọc chúng. Legacy CP932 có thể
+round trip nhưng không chứa đầy đủ dấu Việt; đọc ngược sẽ chặn chữ bị mất hoặc đổi.
+Chỉ chốt hỗ trợ một game sau canary/font/layout và save/load trên bản sao.
+
 ## Kiểm tra và cập nhật
 
 ```powershell
