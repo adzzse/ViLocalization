@@ -7,7 +7,7 @@ Luồng **khảo sát → chuẩn bị nguồn → duyệt spec → research →
 ## Cài đặt
 
 - **Node.js 22+**
-- **Python 3.10+** nếu dùng fitting, giải nén ASAR hoặc WOLF RPG
+- **Python 3.10+** nếu dùng fitting, giải nén ASAR, đóng gói MV hoặc WOLF RPG
 
 Tải repo rồi mở thư mục `ViLocalization`  :
 ```powershell
@@ -52,6 +52,7 @@ Skill hiện tại dùng thêm census/coverage, canary, rà thoại theo cảnh,
 - `scripts/fit_text.py`: gợi ý ngắt dòng theo width/số hàng, không sửa file đầu vào.
 - `vendor/asar/unpack_asar.py`: giải nén ASAR offline ra thư mục mới, giữ archive nguồn.
 - `scripts/wolf_rpg.py`: cầu nối WOLF RPG trên Windows bằng WolfTL đã ghim phiên bản; kiểm tra round trip từng byte, xuất corpus và đọc ngược bản dựng. Xem [lệnh WOLF RPG](docs/tools.md#wolf-rpg-trên-windows).
+- `node scripts/workflow.mjs extract-mv`: đọc RPG Maker MV, gồm thoại/choice/database, Galv quests và các tham số plugin được chọn; `rebuild` xuất patch ZIP kèm hash. Xem [phạm vi và lệnh MV](docs/tools.md#rpg-maker-mv).
 
 - [Workflow, schema và adapter engine](docs/workflow.md)
 - [Dùng các công cụ hỗ trợ](docs/tools.md)

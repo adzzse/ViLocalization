@@ -6,7 +6,7 @@
   "type": "module",
   "engines": { "node": ">=22" },
   "scripts": {
-    "test": "node --test tests/workflow.test.mjs tests/source-integrity.test.mjs",
+    "test": "node --test tests/workflow.test.mjs tests/source-integrity.test.mjs tests/rpg_maker_mv.test.mjs",
     "demo": "node scripts/demo.mjs",
     "check:sources": "node --test tests/source-integrity.test.mjs",
     "test:tools": "python -X utf8 -m unittest discover -s tests -p \"*_test.py\""

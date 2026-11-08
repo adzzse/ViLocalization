@@ -138,6 +138,9 @@ Adapter flat JSON là đường kiểm chứng tham chiếu: lưu bytes trong or
 chặn duplicate key/UTF-8 lỗi, trích text, chứng minh identity rebuild giống byte,
 rồi xuất bảng mới vào build/strings.vi.json. Khi có bản dịch, whitespace định dạng JSON
 có thể đổi; tập key và mọi value được đối chiếu. Nó **không đọc JSON lồng nhau RPG Maker**.
+Với MV, dùng `extract-mv <project> <www-directory>` và `rebuild` tích hợp;
+[adapter MV](tools.md#rpg-maker-mv) giữ vị trí chuỗi, đọc ngược và đóng gói ZIP.
+MZ và các plugin ngoài danh sách hỗ trợ cần khảo sát riêng.
 
 Cho engine khác, viết reader/writer nhỏ cho đúng format được quan sát, theo ENGINE.md:
 

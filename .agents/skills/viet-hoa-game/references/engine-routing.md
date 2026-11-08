@@ -8,7 +8,7 @@ Ghi dấu hiệu, version và hợp đồng extract/rebuild vào ENGINE.md trư�
 | Bảng JSON UTF-8 phẳng, mọi value là string | Đối chiếu key và nơi game nạp file | Adapter extract/rebuild hiện có |
 | BasicData/CommonEvent.dat, database .dat/.project và MapData/*.mps | WOLF RPG; chạy scripts/wolf_rpg.py theo docs/tools.md, kiểm identity trước khi xuất corpus | WolfTL v0.6.2 trên Windows; chuỗi database/runtime cần rà chọn, font/playtest theo game |
 | resources/app.asar, Electron/Tyrano | ASAR chứa data/scenario/scripts; theo resource loader | Script giải nén offline; parser/repack vẫn theo game |
-| data/System.json hoặc www/data, js/rpg_*.js/rmmz_*.js | RPG Maker MV/MZ, event 101/401 và plugin | Cần adapter giữ block thoại và mã plugin; không đưa vào adapter JSON phẳng |
+| data/System.json hoặc www/data, js/rpg_*.js/rmmz_*.js | RPG Maker MV/MZ, event 101/401 và plugin | MV: dùng `extract-mv`/`rebuild` theo docs/tools.md, đọc mv-report.json để thấy nguồn còn ngoài corpus. MZ cần adapter riêng; không dùng JSON phẳng |
 | Data/*.rvdata2, Game.rgss3a | RPG Maker VX Ace/Marshal/archive | Chọn đúng reader/writer theo format sau khi khảo sát |
 | *_Data/Managed hoặc GameAssembly.dll + metadata | Unity Mono hoặc IL2CPP | Xác định text table/asset/hook; chọn công cụ theo build |
 | Engine/, pak/utoc/ucas | Unreal | Xác định version/container và text locres/uasset |

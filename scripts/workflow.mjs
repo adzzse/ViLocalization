@@ -3,6 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
+import { extractMv, loadMv, rebuildMv } from './rpg_maker_mv.mjs';
+import { validateMv } from './mv_text.mjs';
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const readJson = file => JSON.parse(decodeUtf8(fs.readFileSync(file)));
@@ -95,6 +97,7 @@ function loadCorpus(work) {
       fail('Corpus source/IDs changed since extraction. Create a new project for updated game text.');
     }
   }
+  if (project.adapter === 'rpg-maker-mv') loadMv(work, rows);
   return { rows, project };
 }
 
@@ -173,19 +176,26 @@ export function inspectProject(work) {
     }
   }
   const errors = [];
+  const warnings = [];
   const translations = Object.fromEntries(corpus.map(row => [row.id, row.en]));
   for (const id of expected) {
     if (!edits.has(id)) { errors.push(id + ': missing translation'); continue; }
     const value = edits.get(id);
     const row = byId.get(id);
     errors.push(...validateTranslation(row.en, value, config).map(error => id + ': ' + error));
+    if (project.adapter === 'rpg-maker-mv') {
+      const mv = validateMv(row.en, value);
+      errors.push(...mv.errors.map(error => id + ': ' + error));
+      warnings.push(...mv.warnings.map(warning => id + ': ' + warning));
+      if ((row.forbidden || '').split('').some(c => value.includes(c))) errors.push(id + ': source delimiter introduced');
+    }
     for (const token of row.tokens || []) {
       const regex = new RegExp(escapeRegex(token), 'g');
       if (matches(row.en, regex).length !== matches(value, regex).length) errors.push(id + ': literal token changed: ' + token);
     }
     translations[id] = value;
   }
-  return { total: expected.size, translated: edits.size, errors, translations, corpus, manifest, language: project.source_language };
+  return { total: expected.size, translated: edits.size, errors, warnings, translations, corpus, manifest, language: project.source_language };
 }
 
 function checked(work) {
@@ -251,10 +261,11 @@ export function finalize(work) {
 
 export function rebuild(work) {
   const project = readJson(path.join(work, 'project.json'));
-  if (project.adapter !== 'flat-json') fail('This project needs an engine-specific rebuild adapter. See docs/workflow.md.');
+  if (!['flat-json', 'rpg-maker-mv'].includes(project.adapter)) fail('This project needs an engine-specific rebuild adapter. See docs/workflow.md.');
   const { translations } = checked(work);
   const final = readJson(path.join(work, 'final.json'));
   if (!equal(final, translations)) fail('final.json is stale or modified. Run finalize again.');
+  if (project.adapter === 'rpg-maker-mv') return rebuildMv(work, final);
   const bytes = fs.readFileSync(path.join(work, 'original/strings.json'));
   const table = parseTable(bytes);
   const output = render(bytes, table, final);
@@ -266,18 +277,19 @@ export function rebuild(work) {
 
 function main() {
   const [command, input, extra, ...rest] = process.argv.slice(2);
-  const arity = { init: 2, extract: 2, batch: 1, 'export-dialogue': 1, check: 1, status: 1, finalize: 1, rebuild: 1 };
+  const arity = { init: 2, extract: 2, 'extract-mv': 2, batch: 1, 'export-dialogue': 1, check: 1, status: 1, finalize: 1, rebuild: 1 };
   if (!(command in arity) || rest.length || process.argv.slice(3).length !== arity[command]) {
-    fail('Usage: workflow.mjs init <slug> <source-language> | extract <project> <flat-json> | batch|export-dialogue|check|status|finalize|rebuild <project>');
+    fail('Usage: workflow.mjs init <slug> <source-language> | extract <project> <flat-json> | extract-mv <project> <www-directory> | batch|export-dialogue|check|status|finalize|rebuild <project>');
   }
   const work = path.resolve(input);
   switch (command) {
     case 'init': return initProject(input, extra);
     case 'extract': return extractFlatJson(work, path.resolve(extra));
+    case 'extract-mv': return extractMv(work, path.resolve(extra));
     case 'batch': return buildBatches(work).map(({ name, lines }) => ({ name, lines }));
     case 'export-dialogue': return exportDialogue(work);
-    case 'check': { const { total, translated } = checked(work); return { total, translated, errors: 0 }; }
-    case 'status': { const { total, translated, errors } = inspectProject(work); return { total, translated, errors: errors.length, first_errors: errors.slice(0, 10) }; }
+    case 'check': { const { total, translated, warnings } = checked(work); return { total, translated, errors: 0, warnings: warnings.length, first_warnings: warnings.slice(0, 10) }; }
+    case 'status': { const { total, translated, errors, warnings } = inspectProject(work); return { total, translated, errors: errors.length, first_errors: errors.slice(0, 10), warnings: warnings.length, first_warnings: warnings.slice(0, 10) }; }
     case 'finalize': return finalize(work);
     case 'rebuild': return rebuild(work);
   }
